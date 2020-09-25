@@ -66,21 +66,21 @@ public class ScoreService implements Score {
 
     private boolean isDeuce() {
         log.debug("> isDeuce()");
-        final Point pointsOne = game.getPlayerOne().getPoint();
-        final Point pointsTwo = game.getPlayerTwo().getPoint();
-        final boolean equalScore = pointsOne == pointsTwo;
-        final boolean fortyPoints = pointsOne == Forty;
-        log.debug(" - {} {}", equalScore, fortyPoints);
+        final Player playerOne = game.getPlayerOne();
+        final Player playerTwo = game.getPlayerTwo();
+        final boolean equalScore = equalScore(playerOne, playerTwo);
+        final boolean fortyPoints = playerOne.getPoint() == Forty;
+        log.debug(" - conditions: {} {}", equalScore, fortyPoints);
         return equalScore && fortyPoints;
     }
 
     private boolean isWonByTwoPoints() {
         log.debug("> isWonByTwoPoints()");
-        final Point pointsOne = game.getPlayerOne().getPoint();
-        final Point pointsTwo = game.getPlayerTwo().getPoint();
-        final boolean oneWins = isWonByTwoPoints(pointsOne, pointsTwo);
-        final boolean twoWins = isWonByTwoPoints(pointsTwo, pointsOne);
-        log.debug("- {} {}", oneWins, twoWins);
+        final Player playerOne = game.getPlayerOne();
+        final Player playerTwo = game.getPlayerTwo();
+        final boolean oneWins = isWonByTwoPoints(playerOne.getPoint(), playerTwo.getPoint());
+        final boolean twoWins = isWonByTwoPoints(playerTwo.getPoint(), playerOne.getPoint());
+        log.debug("- conditions: {} {}", oneWins, twoWins);
         return oneWins || twoWins;
     }
 
@@ -92,13 +92,18 @@ public class ScoreService implements Score {
     private void deuceIfBothAdvantage() {
         final Player playerOne = game.getPlayerOne();
         final Player playerTwo = game.getPlayerTwo();
-        final Point pointsOne = playerOne.getPoint();
-        final Point pointsTwo = playerTwo.getPoint();
-        final boolean equalScore = pointsOne == pointsTwo;
-        final boolean advantagePoints = pointsOne == Advantage;
+        final boolean equalScore = equalScore(playerOne, playerTwo);
+        final boolean advantagePoints = playerOne.getPoint() == Advantage;
         if (equalScore && advantagePoints) {
             playerOne.setPoint(Forty);
             playerTwo.setPoint(Forty);
         }
+    }
+
+    private boolean equalScore(final Player playerOne, final Player playerTwo) {
+        final Point pointsOne = playerOne.getPoint();
+        final Point pointsTwo = playerTwo.getPoint();
+        final boolean equalScore = pointsOne == pointsTwo;
+        return equalScore;
     }
 }

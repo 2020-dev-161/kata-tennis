@@ -32,6 +32,6 @@ Most of the code is refactored towards single responsibilities.
 
 # How to run the application
 The application has a demo mode, please run:
-java -jar katatennis-0.0.1-SNAPSHOT.jar
+java -jar target/katatennis-0.0.1-SNAPSHOT.jar
 
 or run the maven install or test command to see the output of the unit-tests.
